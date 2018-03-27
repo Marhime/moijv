@@ -2,5 +2,12 @@
 
 {% block body %}
     <h1>Hello MoiJV !!!</h1>
-    <p>{{ msg }}</p>
+    <h2>Liste des utilisateurs</h2>
+    <ul>
+        {# <?php foreach($users as $user): #}
+        {% for user in users %}
+            <li>{{ user.username }} : {{ user.email }}</li>
+        {% endfor %}
+        {# <?php endforeach; #}
+    </ul>
 {% endblock body %}
