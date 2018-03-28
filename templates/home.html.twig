@@ -2,12 +2,6 @@
 
 {% block body %}
     <h1>Hello MoiJV !!!</h1>
-    <h2>Liste des utilisateurs</h2>
-    <ul>
-        {# <?php foreach($users as $user): #}
-        {% for user in users %}
-            <li>{{ user.username }} : {{ user.email }}</li>
-        {% endfor %}
-        {# <?php endforeach; #}
-    </ul>
+    <a style="background: white; border: 1px solid black; border-radius: 4px; padding: 5px; text-decoration: none; color: #000" href="{{ path('login') }}">Connexion</a>
+    <h2>Enculé de ta race !!</h2>
 {% endblock body %}
