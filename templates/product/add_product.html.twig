@@ -1,0 +1,11 @@
+{% extends "admin/layout_admin.html.twig" %}
+{% block body %}
+    <div class="row">
+        <div class="mx-auto col-md-6">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+            <a class="btn btn-info" href="{{ path('admin_dashboard') }}">Revenir au dashboard</a>
+        </div>
+    </div>
+{% endblock body %}

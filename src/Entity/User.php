@@ -4,9 +4,13 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity("email")
+ * @UniqueEntity("username")
  */
 class User implements UserInterface, \Serializable
 {
@@ -19,16 +23,19 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=50, unique=true)
+     * @Assert\Length(min=2, max=50)
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=5, max=50)
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=130, unique=true)
+     * @Assert\Email()
      */
     private $email;
 
@@ -45,6 +52,7 @@ class User implements UserInterface, \Serializable
     /**
      * @param mixed $roles
      */
+
     public function setRoles($roles): void
     {
         $this->roles = $roles;
@@ -55,7 +63,7 @@ class User implements UserInterface, \Serializable
         return $this->id;
     }
 
-    public function getUsername(): string
+    public function getUsername()
     {
         return $this->username;
     }
@@ -67,7 +75,7 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getPassword(): string
+    public function getPassword()
     {
         return $this->password;
     }
@@ -79,7 +87,7 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getEmail(): string
+    public function getEmail()
     {
         return $this->email;
     }
@@ -91,7 +99,7 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getRegisterDate(): \DateTimeInterface
+    public function getRegisterDate()
     {
         return $this->registerDate;
     }
