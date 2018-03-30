@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -17,6 +19,14 @@ class ProductRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Product::class);
+    }
+
+    public function findPaginated($page = 1)
+    {
+        $queryBuilder = $this->createQueryBuilder('p')->orderBy('p.id', 'ASC');
+        $pager = new DoctrineORMAdapter($queryBuilder);
+        $fanta = new Pagerfanta($pager);
+        return $fanta->setMaxPerPage(12)->setCurrentPage($page);
     }
 
 //    /**

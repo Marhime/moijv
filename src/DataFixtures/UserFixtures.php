@@ -17,6 +17,8 @@ class UserFixtures extends Fixture
             $user->setEmail('user'.$i.'@fake.fr');
             $user->setRegisterDate(new \DateTime('-' .$i. 'days'));
             $user->setRoles('ROLE_USER');
+            // addReference garde en référence notre $user sous un certain nom de façon à le rendre disponible dans les autres fixtures
+            $this->addReference('user' . $i, $user);
 
             // $manager persist demande à doctrine de préparer l'insertion (update) en base de données -> INSERT INTO
             $manager->persist($user);

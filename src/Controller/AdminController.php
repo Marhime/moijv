@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Product;
 use App\Entity\User;
 use App\Form\UserType;
-use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -69,53 +67,4 @@ class AdminController extends Controller
         ]);
     }
 
-    /**
-     * @Route("/admin/product/add", name="add_product")
-     * @Route("/admin/product/edit/{id}", name="edit_product")
-     */
-    public function editProduct(Request $request, ObjectManager $manager, Product $product = null)
-    {
-        if ($product === null) {
-            $product = new Product();
-        }
-        $formProduct = $this->createForm(UserType::class, $product)
-            ->add('Envoyer', SubmitType::class);
-        // ... todo : validation du formulaire
-        $formProduct->handleRequest($request); // déclenche la gestion de formulaire
-
-        if($formProduct->isSubmitted() && $formProduct->isValid()){
-            // enregistrement de notre produit
-            $manager->persist($product);
-            $manager->flush();
-            return $this->redirectToRoute('product_list');
-        }
-
-        return $this->render('product/add_product.html.twig', [
-            'form' => $formProduct->createView()
-        ]);
-    }
-
-    /**
-     * @Route("/admin/product/list", name="product_list")
-     */
-    public function produit(ProductRepository $productRepository)
-    {
-        // $userRepo est passé automatiquement en parametre par Symfony -> injection de dépendance. On n'a donc pas à l'instancier nous-même
-        // $userRepo effectuera ici un SELECT * FROM user ...
-        $productList = $productRepository->findAll();
-
-        return $this->render("product/liste_produit.html.twig", [
-            'products' => $productList
-        ]);
-    }
-
-    /**
-     * @Route("/admin/product/delete/{id}", name="delete_product")
-     */
-    public function deleteProduct(Product $product, ObjectManager $manager)
-    {
-        $manager->remove($product);
-        $manager->flush();
-        return $this->redirectToRoute('product_list');
-    }
 }
