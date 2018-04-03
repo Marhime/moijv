@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Product;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
@@ -24,6 +25,18 @@ class ProductRepository extends ServiceEntityRepository
     public function findPaginated($page = 1)
     {
         $queryBuilder = $this->createQueryBuilder('p')->orderBy('p.id', 'ASC');
+        $pager = new DoctrineORMAdapter($queryBuilder);
+        $fanta = new Pagerfanta($pager);
+        return $fanta->setMaxPerPage(12)->setCurrentPage($page);
+    }
+
+    public function findPaginatedByUser(User $user, $page = 1)
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->innerJoin('p.owner', 'u')
+            ->where('u = :user')
+            ->setParameter('user', $user)
+            ->orderBy('p.id', 'ASC');
         $pager = new DoctrineORMAdapter($queryBuilder);
         $fanta = new Pagerfanta($pager);
         return $fanta->setMaxPerPage(12)->setCurrentPage($page);

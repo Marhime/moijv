@@ -2,9 +2,12 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraint as Assert;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  * @UniqueEntity("title")
@@ -33,6 +36,54 @@ class Product
      * @var User owner
      */
     private $owner;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="products")
+     * @var Collection
+     */
+    private $tags;
+
+    /**
+     * @return Collection
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
+
+    /**
+     *
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(groups={"insertion"})
+     * @Assert\Image(
+     *     minWidth = 200,
+     *     minHeight = 200,
+     *     maxSize = "2M"
+     * )
+     * @var object
+     */
+    private $image;
+
+    /**
+     * @return object
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param object $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
 
     /**
      * @return User
