@@ -88,4 +88,5 @@ class ProductController extends Controller
             'form' => $formProduct->createView()
         ]);
     }
+
 }

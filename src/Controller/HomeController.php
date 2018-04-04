@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Repository\UserRepository;
+use App\Repository\ProductRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -15,11 +15,16 @@ class HomeController extends Controller
     {
         return $this->redirectToRoute("home");
     }
+
     /**
      * @Route("/home", name="home")
+     * @Route("/home/{page}", name="home_paginated")
      */
-    public function index(UserRepository $userRepository)
+    public function index(ProductRepository $productRepository, $page = 1)
     {
-        return $this->render("home.html.twig");
+        $products = $productRepository->findPaginated($page);
+        return $this->render('home.html.twig', [
+            'products' => $products
+        ]);
     }
 }

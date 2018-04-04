@@ -1,7 +1,19 @@
-{% extends "base.html.twig" %}
+{% extends 'base.html.twig' %}
+
+{% block title %}Les produits{% endblock %}
 
 {% block body %}
-    <h1>Hello MoiJV !!!</h1>
-    <a style="background: white; border: 1px solid black; border-radius: 4px; padding: 5px; text-decoration: none; color: #000" href="{{ path('login') }}">Connexion</a>
-    <h2>Enculé de ta race !!</h2>
-{% endblock body %}
+    <!-- Jumbotron Header -->
+    <header class="jumbotron my-4">
+        <h1 class="display-3">Les produits disponibles</h1>
+        <p class="lead">Voici la liste de tous nos jeux vidéos référencés sur le site</p>
+        {% if is_granted('ROLE_USER') %}
+        <a href="{{ path('add_product') }}" class="btn btn-primary btn-lg">Ajouter un produit</a>
+        {% else %}
+        <a href="{{ path('login') }}" class="btn btn-primary btn-lg">Se connecter</a>
+        {% endif %}
+    </header>
+
+    {%  include 'incs/product_list.html.twig' with { 'products' : products, 'routeName' : 'home_paginated' } %}
+
+{% endblock %}

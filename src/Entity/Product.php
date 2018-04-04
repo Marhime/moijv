@@ -43,6 +43,15 @@ class Product
      */
     private $tags;
 
+    public function addTag($tag)
+    {
+        if($this->tags->contains($tag)){
+            return;
+        }
+        $this->tags->add($tag);
+        $tag->getProducts()->add($this);
+    }
+
     /**
      * @return Collection
      */
