@@ -8,7 +8,7 @@
                     <h4 class="card-title">{{ product.title }}</h4>
                     <p class="card-text">{{ product.description }}</p>
                 {% for tag in product.tags %}
-                    <span class="badge badge-pill badge-primary">#{{ tag.name }}</span>
+                    <a href="{{ path('tag', { 'slug' : tag.slug }) }}" class="badge badge-pill badge-primary">#{{ tag.name }}</a>
                 {% endfor %}
                 </div>
                 {% if is_granted('ROLE_USER') and product.owner.id == app.user.id %}

@@ -38,10 +38,19 @@ class Product
     private $owner;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="products")
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="products", cascade="persist")
      * @var Collection
      */
     private $tags;
+
+    /**
+     * @param Collection $tags
+     */
+    public function setTags(Collection $tags)
+    {
+        $this->tags = $tags;
+        return $this;
+    }
 
     public function addTag($tag)
     {

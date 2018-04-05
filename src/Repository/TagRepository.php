@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Tag;
+use Cocur\Slugify\Slugify;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -17,6 +18,27 @@ class TagRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Tag::class);
+    }
+
+    /**
+     * @param string $tagName the name of the tag we are looking for
+     * @return Tag the corresponding tag in db or a new Tag instance if no corresponding tag is found
+     */
+    public function getCorrespondingTag($tagName)
+    {
+        $slugify = new Slugify();
+        $tagSlug = $slugify->slugify($tagName);
+        // SELECT t.* FROM tag as t WHERE slug = :tagSlug LIMIT 1
+        $tag = $this->findOneBy(['slug' => $tagSlug]);
+
+        if(!$tag)
+        {
+            $tag = new Tag();
+            $tag->setName($tagName);
+            $tag->setSlug($tagSlug);
+        }
+        return $tag;
+
     }
 
 //    /**
